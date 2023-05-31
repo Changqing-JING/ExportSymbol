@@ -20,3 +20,14 @@ qcc.symbol: main.qcc.bin
 
 qcc.s.symbol: qcc.s.bin
 	x86_64-pc-nto-qnx7.1.0-readelf --symbol build/$<
+
+mac.bin: main.c
+	clang -exported_symbols_list exports -O3 -o build/$@ $<
+	
+mac.s.bin: mac.bin
+	llvm-strip -x -o build/$@ build/$<
+
+mac.symbol: mac.bin
+	llvm-readelf --symbols build/$<
+mac.s.symbol: mac.s.bin
+	llvm-readelf --symbols build/$<
